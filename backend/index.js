@@ -11,14 +11,14 @@ const PORT = process.env.PORT || process.env.SERVER_PORT
 
 const app = express()
 
-const server = new ParseServer({
+const parseServer = new ParseServer({
   databaseURI: process.env.DB_URI,
   cloud: `${process.cwd()}/cloud/main.js`,
   appId: process.env.APP_ID,
   masterKey: process.env.MASTER_KEY,
   serverURL: process.env.SERVER_URL
 })
-const dashboard = new ParseDashboard({
+const parseDashboard = new ParseDashboard({
   apps: [
     {
       serverURL: '/parse',
@@ -29,9 +29,9 @@ const dashboard = new ParseDashboard({
   ]
 })
 
-await server.start()
+await parseServer.start()
 
-app.use('/parse', server.app)
-app.use('/dashboard', dashboard)
+app.use('/parse', parseServer.app)
+app.use('/dashboard', parseDashboard)
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
