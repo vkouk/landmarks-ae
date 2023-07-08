@@ -23,7 +23,11 @@
         />
       </div>
       <div class="w-full flex flex-col justify-between p-4">
-        <h2 class="text-2xl font-bold mb-2">{{ landmark.attributes.title }}</h2>
+        <a [routerLink]="['landmark', landmark.attributes.title]">
+          <h2 class="text-2xl font-bold mb-2">
+            {{ landmark.attributes.title }}
+          </h2>
+        </a>
         <p class="text-gray-600 overflow-y-auto">
           {{ landmark.attributes.short_info }}
         </p>

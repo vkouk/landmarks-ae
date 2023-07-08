@@ -1,0 +1,53 @@
+<div class="w-full h-full flex">
+  <div *ngIf="error" class="flex items-center justify-center">
+    <span>{{ error }}</span>
+  </div>
+  <div *ngIf="landmark" class="flex flex-col w-full h-full gap-y-12">
+    <div
+      class="flex flex-col gap-y-2 xl:flex-row items-center xl:gap-y-0 w-full h-full"
+    >
+      <div class="w-full sm:w-[18rem] lg:w-[22rem] h-full">
+        <img
+          [src]="landmark.attributes.photo_thumb"
+          [alt]="landmark.attributes.title"
+          class="object-cover w-full rounded-lg"
+          loading="lazy"
+        />
+      </div>
+      <div class="w-full flex flex-col px-4 gap-y-5">
+        <div class="flex flex-col">
+          <h2 class="text-2xl font-bold mb-[0.25rem]">
+            {{ landmark.attributes.title }}
+          </h2>
+          <a
+            class="text-sm text-gray-400 hover:underline"
+            [href]="landmark.attributes.url"
+            target="_blank"
+          >
+            <span>Official Link</span>
+          </a>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-sm text-gray-400 mb-[0.25rem]">Short info</span>
+          <p class="text-gray-600">
+            {{ landmark.attributes.short_info }}
+          </p>
+        </div>
+
+        <div class="flex flex-col">
+          <span class="text-sm text-gray-400 mb-[0.25rem]">Description</span>
+          <p class="text-gray-600">
+            {{ landmark.attributes.description }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-grow">
+      <iframe
+        class="w-full h-[30rem]"
+        [src]="googleMapsSrc"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+</div>

@@ -2,8 +2,8 @@ import { Component } from '@angular/core'
 import { FormControl } from '@angular/forms'
 import { debounceTime } from 'rxjs'
 
-import { ParseServerService } from '../../services/parse-server/parse-server.service'
-import { ILandmark } from '../../interfaces/landmark'
+import { ParseServerService } from '../../shared/services/parse-server/parse-server.service'
+import { ILandmark } from '../../shared/interfaces/landmark'
 
 @Component({
   selector: 'app-landmarks',

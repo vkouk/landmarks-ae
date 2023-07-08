@@ -34,7 +34,8 @@ Parse.Cloud.define(
       'photo_thumb',
       'short_info',
       'description',
-      'location'
+      'location',
+      'url'
     )
 
     const res = await query.first()

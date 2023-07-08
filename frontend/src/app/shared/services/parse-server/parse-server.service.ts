@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 
 import * as Parse from 'parse'
-import environment from '../../../../environments/environment'
+import environment from '../../../../../environments/environment'
 import { ILandmark } from '../../interfaces/landmark'
 
 @Injectable({
@@ -20,7 +20,7 @@ export class ParseServerService {
     return await Parse.Cloud.run('fetchLandmarks', { search: searchInput })
   }
 
-  async fetchLandmark(id: string): Promise<ILandmark> {
-    return await Parse.Cloud.run('fetchLandmark', { id })
+  async fetchLandmark(title: string): Promise<ILandmark> {
+    return await Parse.Cloud.run('fetchLandmark', { title })
   }
 }
