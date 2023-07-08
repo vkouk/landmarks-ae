@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router'
 import { DomSanitizer } from '@angular/platform-browser'
 
 import { ILandmark } from '../../shared/interfaces/landmark'
-import { ParseServerService } from '../../shared/services/parse-server/parse-server.service'
+import { LandmarksService } from '../../shared/services/landmarks.service'
 
 @Component({
   selector: 'app-landmark',
@@ -15,14 +15,16 @@ export class LandmarkComponent {
 
   constructor(
     private sanitizer: DomSanitizer,
-    private parseService: ParseServerService,
+    private landmarksService: LandmarksService,
     private route: ActivatedRoute
   ) {}
 
   async ngOnInit() {
     this.route.params.subscribe(async (params) => {
       try {
-        this.landmark = await this.parseService.fetchLandmark(params['title'])
+        this.landmark = await this.landmarksService.fetchLandmark(
+          params['title']
+        )
       } catch (error: any) {
         this.error = error.message
       }

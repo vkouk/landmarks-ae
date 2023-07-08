@@ -2,8 +2,8 @@ import { Component } from '@angular/core'
 import { FormControl } from '@angular/forms'
 import { debounceTime } from 'rxjs'
 
-import { ParseServerService } from '../../shared/services/parse-server/parse-server.service'
 import { ILandmark } from '../../shared/interfaces/landmark'
+import { LandmarksService } from '../../shared/services/landmarks.service'
 
 @Component({
   selector: 'app-landmarks',
@@ -15,7 +15,7 @@ export class LandmarksComponent {
 
   selectedLandmark: ILandmark | null = null
 
-  constructor(private parseService: ParseServerService) {}
+  constructor(private landmarksService: LandmarksService) {}
 
   async ngOnInit() {
     // Initial fetch of landmarks
@@ -27,7 +27,7 @@ export class LandmarksComponent {
   }
 
   async _updateLandmarks(searchInput?: string | null) {
-    this.landmarks = await this.parseService.fetchLandmarks(searchInput)
+    this.landmarks = await this.landmarksService.fetchLandmarks(searchInput)
   }
 
   openImageModal(landmark: ILandmark) {

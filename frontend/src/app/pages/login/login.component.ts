@@ -2,7 +2,7 @@ import { Component } from '@angular/core'
 import { FormControl } from '@angular/forms'
 import { Router } from '@angular/router'
 
-import { ParseServerService } from '../../shared/services/parse-server/parse-server.service'
+import { UserService } from '../../shared/services/user.service'
 
 @Component({
   selector: 'app-login',
@@ -15,13 +15,13 @@ export class LoginComponent {
   passwordControl = new FormControl('')
 
   constructor(
-    private parseService: ParseServerService,
+    private usersService: UserService,
     private router: Router
   ) {}
 
   async loginUser() {
     try {
-      await this.parseService.loginUser(
+      await this.usersService.loginUser(
         this.usernameControl.value as string,
         this.passwordControl.value as string
       )
