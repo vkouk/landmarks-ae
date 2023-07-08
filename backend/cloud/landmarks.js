@@ -23,9 +23,12 @@ Parse.Cloud.define('fetchLandmarks', async (req) => {
 Parse.Cloud.define(
   'fetchLandmark',
   async (req) => {
+    const title = req.params.title
+
     const LandMark = Parse.Object.extend('Landmark')
     const query = new Parse.Query(LandMark)
 
+    query.equalTo('title', title)
     query.select(
       'title',
       'photo_thumb',
@@ -34,11 +37,14 @@ Parse.Cloud.define(
       'location'
     )
 
-    try {
-      return await query.get(req.params.id)
-    } catch (e) {
-      throw new Parse.Error(404, `Landmark with id ${req.params.id} not found`)
-    }
+    const res = await query.first()
+
+    if (!res)
+      throw new Parse.Error(404, `Landmark with title ${title} not found`)
+
+    return res
   },
-  { fields: ['id'] }
+  {
+    fields: ['title']
+  }
 )
