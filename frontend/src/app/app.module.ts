@@ -8,6 +8,8 @@ import { LandmarksComponent } from './pages/landmarks/landmarks.component'
 import { LandmarkComponent } from './pages/landmark/landmark.component'
 import { LoginComponent } from './pages/login/login.component'
 
+import { CustomInputComponent } from './shared/components/custom-input/custom-input.component'
+
 const routes: Routes = [
   { path: '', component: LandmarksComponent },
   { path: 'login', component: LoginComponent },
@@ -20,7 +22,8 @@ const routes: Routes = [
     AppComponent,
     LandmarksComponent,
     LandmarkComponent,
-    LoginComponent
+    LoginComponent,
+    CustomInputComponent
   ],
   imports: [BrowserModule, RouterModule.forRoot(routes), ReactiveFormsModule],
   providers: [],
