@@ -13,6 +13,8 @@ export class LandmarksComponent {
   landmarks: ILandmark[] = []
   searchInput = new FormControl('')
 
+  selectedLandmark: ILandmark | null = null
+
   constructor(private parseService: ParseServerService) {}
 
   async ngOnInit() {
@@ -26,5 +28,13 @@ export class LandmarksComponent {
 
   async _updateLandmarks(searchInput?: string | null) {
     this.landmarks = await this.parseService.fetchLandmarks(searchInput)
+  }
+
+  openImageModal(landmark: ILandmark) {
+    this.selectedLandmark = landmark
+  }
+
+  closeImageModal() {
+    this.selectedLandmark = null
   }
 }

@@ -5,6 +5,7 @@ interface ILandmark {
     short_info: string
     description: string
     photo_thumb: string
+    photo: string
     url: string
     location: number[]
   }

@@ -3,7 +3,7 @@ Parse.Cloud.define('fetchLandmarks', async (req) => {
   const query = new Parse.Query(LandMark)
 
   query.ascending('order')
-  query.select('title', 'photo_thumb', 'short_info')
+  query.select('title', 'photo_thumb', 'photo', 'short_info')
 
   if (req.params.search) {
     query.fullText('title', req.params.search)

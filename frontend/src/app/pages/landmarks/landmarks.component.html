@@ -14,7 +14,10 @@
       *ngFor="let landmark of landmarks"
       class="bg-white shadow-xl rounded-lg flex flex-col sm:flex-row w-full h-full lg:h-[22rem]"
     >
-      <div class="w-full sm:w-[16rem] h-full">
+      <div
+        class="w-full sm:w-[16rem] h-full cursor-pointer hover:opacity-50 transition-opacity ease-in-out duration-500"
+        (click)="openImageModal(landmark)"
+      >
         <img
           [src]="landmark.attributes.photo_thumb"
           [alt]="landmark.attributes.title"
@@ -33,5 +36,23 @@
         </p>
       </div>
     </div>
+  </div>
+
+  <div
+    class="fixed inset-0 z-[1] flex items-center justify-center"
+    *ngIf="!!selectedLandmark"
+  >
+    <div class="bg-white p-4 rounded-lg shadow-lg z-[2]">
+      <img
+        [src]="selectedLandmark.attributes.photo"
+        [alt]="selectedLandmark.attributes.title"
+        class="object-contain h-[80vh] max-w-full"
+        loading="lazy"
+      />
+    </div>
+    <div
+      class="fixed inset-0 bg-black opacity-50"
+      (click)="closeImageModal()"
+    ></div>
   </div>
 </div>
