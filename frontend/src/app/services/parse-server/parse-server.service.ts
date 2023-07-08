@@ -16,8 +16,8 @@ export class ParseServerService {
     Parse.serverURL = this.serverURL
   }
 
-  async fetchLandmarks(): Promise<ILandmark[]> {
-    return await Parse.Cloud.run('fetchLandmarks')
+  async fetchLandmarks(searchInput?: string | null): Promise<ILandmark[]> {
+    return await Parse.Cloud.run('fetchLandmarks', { search: searchInput })
   }
 
   async fetchLandmark(id: string): Promise<ILandmark> {

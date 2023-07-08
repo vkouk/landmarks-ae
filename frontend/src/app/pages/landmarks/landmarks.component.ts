@@ -1,4 +1,6 @@
 import { Component } from '@angular/core'
+import { FormControl } from '@angular/forms'
+import { debounceTime } from 'rxjs'
 
 import { ParseServerService } from '../../services/parse-server/parse-server.service'
 import { ILandmark } from '../../interfaces/landmark'
@@ -9,10 +11,20 @@ import { ILandmark } from '../../interfaces/landmark'
 })
 export class LandmarksComponent {
   landmarks: ILandmark[] = []
+  searchInput = new FormControl('')
 
   constructor(private parseService: ParseServerService) {}
 
   async ngOnInit() {
-    this.landmarks = await this.parseService.fetchLandmarks()
+    // Initial fetch of landmarks
+    await this._updateLandmarks()
+
+    this.searchInput.valueChanges
+      .pipe(debounceTime(300))
+      .subscribe(async (value) => await this._updateLandmarks(value))
+  }
+
+  async _updateLandmarks(searchInput?: string | null) {
+    this.landmarks = await this.parseService.fetchLandmarks(searchInput)
   }
 }
