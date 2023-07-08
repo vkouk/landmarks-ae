@@ -23,4 +23,16 @@ export class ParseServerService {
   async fetchLandmark(title: string): Promise<ILandmark> {
     return await Parse.Cloud.run('fetchLandmark', { title })
   }
+
+  async loginUser(username: string, password: string) {
+    return await Parse.User.logIn(username, password)
+  }
+
+  async logoutUser() {
+    return await Parse.User.logOut()
+  }
+
+  currentUser() {
+    return Parse.User.current()
+  }
 }

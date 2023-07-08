@@ -1,0 +1,30 @@
+<div class="flex flex-col justify-center items-center gap-y-5">
+  <div class="flex items-center w-full max-w-[35rem] mx-auto">
+    <input
+      [formControl]="usernameControl"
+      type="text"
+      id="username"
+      class="w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-amber-500 focus:border-amber-500 focus:outline-none"
+      placeholder="Username..."
+      required
+    />
+  </div>
+  <div class="flex items-center w-full max-w-[35rem] mx-auto">
+    <input
+      [formControl]="passwordControl"
+      type="password"
+      id="password"
+      class="w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-amber-500 focus:border-amber-500 focus:outline-none"
+      placeholder="Password..."
+      required
+    />
+  </div>
+  <button
+    [disabled]="loginButtonDisabled"
+    (click)="loginUser()"
+    class="bg-amber-500 p-4 rounded-lg w-[10rem] text-white hover:bg-amber-600 transition-bg duration-500 disabled:pointer-events-none disabled:opacity-50"
+  >
+    Login
+  </button>
+  <span *ngIf="error" class="text-red-700 text-bold text-2xl">{{ error }}</span>
+</div>

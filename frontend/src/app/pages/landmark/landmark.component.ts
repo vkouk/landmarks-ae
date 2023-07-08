@@ -23,8 +23,8 @@ export class LandmarkComponent {
     this.route.params.subscribe(async (params) => {
       try {
         this.landmark = await this.parseService.fetchLandmark(params['title'])
-      } catch (e) {
-        this.error = (e as any).message
+      } catch (error: any) {
+        this.error = error.message
       }
     })
   }
