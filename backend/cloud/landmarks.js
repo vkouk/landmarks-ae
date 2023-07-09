@@ -108,11 +108,6 @@ Parse.Cloud.define(
     const base64Image = image.split(',')[1]
     const imageBuffer = Buffer.from(base64Image, 'base64')
 
-    // Check if file size is greater than 5MB
-    if (imageBuffer.length > 5 * 1024 * 1024) {
-      throw new Parse.Error(500, `File's size is bigger than 5MB`)
-    }
-
     const photoThumbBuffer = await sharp(imageBuffer)
       .resize(Number(process.env.PHOTO_WIDTH), Number(process.env.PHOTO_HEIGHT))
       .toBuffer()

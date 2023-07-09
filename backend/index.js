@@ -17,7 +17,8 @@ const parseServer = new ParseServer({
   appId: process.env.APP_ID,
   masterKey: process.env.MASTER_KEY,
   serverURL: process.env.SERVER_URL,
-  publicServerURL: process.env.PUBLIC_SERVER_URL
+  publicServerURL: process.env.PUBLIC_SERVER_URL,
+  maxUploadSize: '5mb'
 })
 const parseDashboard = new ParseDashboard(
   {
