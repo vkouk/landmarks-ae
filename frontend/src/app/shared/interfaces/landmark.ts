@@ -11,4 +11,10 @@ interface ILandmark {
   }
 }
 
-export { ILandmark }
+interface ILandmarkInput {
+  title: string
+  short_info: string
+  description: string
+}
+
+export { ILandmark, ILandmarkInput }

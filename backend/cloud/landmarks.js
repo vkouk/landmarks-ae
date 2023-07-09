@@ -49,3 +49,43 @@ Parse.Cloud.define(
     fields: ['title']
   }
 )
+
+Parse.Cloud.define(
+  'updateLandmark',
+  async (req) => {
+    const { id, updatedData } = req.params
+
+    const LandMark = Parse.Object.extend('Landmark')
+    const query = new Parse.Query(LandMark)
+
+    query.select('title', 'short_info', 'description')
+
+    const model = await query.get(id)
+
+    Object.keys(updatedData).forEach((key) => {
+      const newValue = updatedData[key].trim()
+
+      // Update only fields that have changed
+      if (model.get(key) !== newValue) {
+        model.set(key, newValue)
+      }
+    })
+
+    await model.save(null, { sessionToken: req.user.getSessionToken() })
+
+    return model
+  },
+  {
+    fields: {
+      id: {
+        required: true,
+        type: String
+      },
+      updatedData: {
+        required: true,
+        type: Object
+      }
+    },
+    requireUser: true
+  }
+)

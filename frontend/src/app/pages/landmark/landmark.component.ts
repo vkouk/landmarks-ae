@@ -1,6 +1,7 @@
 import { Component } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { DomSanitizer } from '@angular/platform-browser'
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 
 import { ILandmark } from '../../shared/interfaces/landmark'
 import { LandmarksService } from '../../shared/services/landmarks.service'
@@ -12,23 +13,84 @@ import { LandmarksService } from '../../shared/services/landmarks.service'
 export class LandmarkComponent {
   landmark: ILandmark | null = null
   error: string | null = null
+  isEditMode: boolean = false
+
+  landmarkForm: FormGroup = new FormGroup({
+    title: new FormControl('', Validators.required),
+    short_info: new FormControl('', Validators.required),
+    description: new FormControl('', Validators.required)
+  })
 
   constructor(
+    private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
     private landmarksService: LandmarksService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   async ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      this.isEditMode = params['editMode'] === 'true'
+    })
+
     this.route.params.subscribe(async (params) => {
       try {
         this.landmark = await this.landmarksService.fetchLandmark(
           params['title']
         )
+
+        this._updateLandmarkForm()
       } catch (error: any) {
         this.error = error.message
       }
     })
+  }
+
+  async toggleEditMode() {
+    this.error = null
+    this.isEditMode = !this.isEditMode
+
+    this._updateLandmarkForm()
+
+    await this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { editMode: this.isEditMode },
+      queryParamsHandling: 'merge'
+    })
+  }
+
+  async onLandmarkUpdate() {
+    const { id: landmarkId } = this.landmark as ILandmark
+    const formData = this.landmarkForm.value
+
+    try {
+      this.error = null
+
+      const updatedLandmark = await this.landmarksService.updateLandmark(
+        landmarkId,
+        formData
+      )
+
+      await this.router.navigate(['landmark', updatedLandmark.attributes.title])
+    } catch (error: any) {
+      this.error = error.message
+    }
+  }
+
+  _updateLandmarkForm() {
+    const landmark = this.landmark as ILandmark
+
+    // Reset form status (ex dirty) & values
+    this.landmarkForm.reset({
+      title: landmark.attributes.title,
+      short_info: landmark.attributes.short_info,
+      description: landmark.attributes.description
+    })
+  }
+
+  get updateButtonDisabled(): boolean {
+    return !this.landmarkForm.valid || !this.landmarkForm.dirty
   }
 
   get googleMapsSrc(): string | null {
