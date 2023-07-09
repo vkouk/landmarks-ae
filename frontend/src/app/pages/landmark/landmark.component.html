@@ -1,4 +1,6 @@
-<div class="w-full h-full flex flex-col gap-y-5">
+<app-loader *ngIf="isLoading"></app-loader>
+
+<div *ngIf="!isLoading" class="w-full h-full flex flex-col gap-y-5">
   <div
     *ngIf="landmark && !isEditMode"
     class="flex flex-col w-full h-full gap-y-12"

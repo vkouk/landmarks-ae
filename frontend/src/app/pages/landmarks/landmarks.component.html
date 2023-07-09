@@ -1,3 +1,5 @@
+<app-loader *ngIf="isLoading"></app-loader>
+
 <div class="flex flex-col w-full h-full gap-y-4">
   <app-custom-input
     [control]="searchInput"
@@ -8,7 +10,10 @@
     [required]="false"
   ></app-custom-input>
 
-  <div class="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4 w-full">
+  <div
+    *ngIf="!isLoading"
+    class="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4 w-full"
+  >
     <div
       *ngFor="let landmark of landmarks"
       class="bg-white shadow-xl rounded-lg flex flex-col sm:flex-row w-full h-full lg:h-[22rem]"
@@ -37,21 +42,23 @@
     </div>
   </div>
 
-  <div
-    class="fixed inset-0 z-[1] flex items-center justify-center"
-    *ngIf="!!selectedLandmark"
-  >
-    <div class="bg-white p-4 rounded-lg shadow-lg z-[2]">
-      <img
-        [src]="selectedLandmark.attributes.photo"
-        [alt]="selectedLandmark.attributes.title"
-        class="object-contain h-[80vh] max-w-full"
-        loading="lazy"
-      />
-    </div>
-    <div
-      class="fixed inset-0 bg-black opacity-50"
-      (click)="closeImageModal()"
-    ></div>
+  <app-error-message [error]="error"></app-error-message>
+</div>
+
+<div
+  class="fixed inset-0 z-[1] flex items-center justify-center"
+  *ngIf="!!selectedLandmark"
+>
+  <div class="bg-white p-4 rounded-lg shadow-lg z-[2]">
+    <img
+      [src]="selectedLandmark.attributes.photo"
+      [alt]="selectedLandmark.attributes.title"
+      class="object-contain h-[80vh] max-w-full"
+      loading="lazy"
+    />
   </div>
+  <div
+    class="fixed inset-0 bg-black opacity-50"
+    (click)="closeImageModal()"
+  ></div>
 </div>

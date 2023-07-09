@@ -37,4 +37,12 @@ export class LandmarksComponent {
   closeImageModal() {
     this.selectedLandmark = null
   }
+
+  get isLoading() {
+    return this.landmarksService.loading
+  }
+
+  get error() {
+    return this.landmarksService.fetchError
+  }
 }

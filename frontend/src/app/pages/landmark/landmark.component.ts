@@ -13,7 +13,6 @@ import { LandmarksService } from '../../shared/services/landmarks.service'
 })
 export class LandmarkComponent {
   landmark: ILandmark | null = null
-  error: string | null = null
   isEditMode: boolean = false
 
   landmarkForm: FormGroup = new FormGroup({
@@ -37,15 +36,9 @@ export class LandmarkComponent {
     })
 
     this.route.params.subscribe(async (params) => {
-      try {
-        this.landmark = await this.landmarksService.fetchLandmark(
-          params['title']
-        )
+      this.landmark = await this.landmarksService.fetchLandmark(params['title'])
 
-        this._updateLandmarkForm()
-      } catch (error: any) {
-        this.error = error.message
-      }
+      this._updateLandmarkForm()
     })
   }
 
@@ -54,33 +47,31 @@ export class LandmarkComponent {
     const eventTarget = event.target as HTMLInputElement
 
     if (eventTarget.files && eventTarget.files.length > 0) {
+      this.landmarksService.clearError()
+
       const file = eventTarget.files[0]
 
       fileReader.readAsDataURL(file)
 
       fileReader.onload = async (e: any) => {
-        try {
-          this.error = null
+        const { id: landmarkId, attributes } = this.landmark as ILandmark
 
-          const { id: landmarkId, attributes } = this.landmark as ILandmark
+        const updatedLandmark = await this.landmarksService.updatePhoto(
+          landmarkId,
+          e.target.result,
+          file.name,
+          file.type
+        )
 
-          const updatedLandmark = await this.landmarksService.updatePhoto(
-            landmarkId,
-            e.target.result,
-            file.name,
-            file.type
-          )
-
+        if (updatedLandmark) {
           attributes.photo_thumb = updatedLandmark.attributes.photo_thumb
-        } catch (error: any) {
-          this.error = error.message
         }
       }
     }
   }
 
   async toggleEditMode() {
-    this.error = null
+    this.landmarksService.clearError()
     this.isEditMode = !this.isEditMode
 
     this._updateLandmarkForm()
@@ -96,29 +87,27 @@ export class LandmarkComponent {
     const { id: landmarkId } = this.landmark as ILandmark
     const formData = this.landmarkForm.value
 
-    try {
-      this.error = null
+    this.landmarksService.clearError()
 
-      const updatedLandmark = await this.landmarksService.updateLandmark(
-        landmarkId,
-        formData
-      )
+    const updatedLandmark = await this.landmarksService.updateLandmark(
+      landmarkId,
+      formData
+    )
 
+    if (updatedLandmark) {
       await this.router.navigate(['landmark', updatedLandmark.attributes.title])
-    } catch (error: any) {
-      this.error = error.message
     }
   }
 
   _updateLandmarkForm() {
-    const landmark = this.landmark as ILandmark
-
-    // Reset form status (ex dirty) & values
-    this.landmarkForm.reset({
-      title: landmark.attributes.title,
-      short_info: landmark.attributes.short_info,
-      description: landmark.attributes.description
-    })
+    if (this.landmark) {
+      // Reset form status (ex dirty) & values
+      this.landmarkForm.reset({
+        title: this.landmark.attributes.title,
+        short_info: this.landmark.attributes.short_info,
+        description: this.landmark.attributes.description
+      })
+    }
   }
 
   get updateButtonDisabled(): boolean {
@@ -131,5 +120,13 @@ export class LandmarkComponent {
           `https://maps.google.com/maps?q=${this.landmark.attributes.location?.[1]},${this.landmark.attributes.location?.[0]}&z=16&output=embed`
         ) as string)
       : null
+  }
+
+  get isLoading() {
+    return this.landmarksService.loading
+  }
+
+  get error() {
+    return this.landmarksService.fetchError
   }
 }

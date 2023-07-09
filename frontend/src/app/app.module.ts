@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router'
 import { ReactiveFormsModule } from '@angular/forms'
 
 import { AppComponent } from './app.component'
+
 import { LandmarksComponent } from './pages/landmarks/landmarks.component'
 import { LandmarkComponent } from './pages/landmark/landmark.component'
 import { LoginComponent } from './pages/login/login.component'
@@ -11,6 +12,7 @@ import { LoginComponent } from './pages/login/login.component'
 import { CustomInputComponent } from './shared/components/custom-input/custom-input.component'
 import { EditIconComponent } from './shared/components/edit-icon/edit-icon.component'
 import { ErrorMessageComponent } from './shared/components/error-message/error-message.component'
+import { LoaderComponent } from './shared/components/loader/loader.component'
 
 const routes: Routes = [
   { path: '', component: LandmarksComponent },
@@ -27,7 +29,8 @@ const routes: Routes = [
     LoginComponent,
     CustomInputComponent,
     EditIconComponent,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    LoaderComponent
   ],
   imports: [BrowserModule, RouterModule.forRoot(routes), ReactiveFormsModule],
   providers: [],

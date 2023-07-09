@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { ReactiveFormsModule } from '@angular/forms'
+import { RouterTestingModule } from '@angular/router/testing'
 
 import { LandmarksComponent } from './landmarks.component'
 import { LandmarksService } from '../../shared/services/landmarks.service'
 import { CustomInputComponent } from '../../shared/components/custom-input/custom-input.component'
-import { RouterTestingModule } from '@angular/router/testing'
+import { ErrorMessageComponent } from '../../shared/components/error-message/error-message.component'
 
 const mockLandmarks = [
   {
@@ -27,7 +28,11 @@ describe('LandmarksComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, RouterTestingModule],
-      declarations: [LandmarksComponent, CustomInputComponent],
+      declarations: [
+        LandmarksComponent,
+        CustomInputComponent,
+        ErrorMessageComponent
+      ],
       providers: [{ provide: LandmarksService, useValue: spy }]
     }).compileComponents()
 
