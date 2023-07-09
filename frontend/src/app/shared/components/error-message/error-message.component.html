@@ -1,3 +1,7 @@
-<div *ngIf="error" #errorMessage class="flex items-center justify-center">
+<div
+  *ngIf="error"
+  #errorMessage
+  class="error-message flex items-center justify-center"
+>
   <span class="text-red-700 text-bold text-2xl">{{ error }}</span>
 </div>

@@ -128,7 +128,7 @@ export class LandmarkComponent {
   get googleMapsSrc(): string | null {
     return this.landmark
       ? (this.sanitizer.bypassSecurityTrustResourceUrl(
-          `https://maps.google.com/maps?q=${this.landmark.attributes.location[1]},${this.landmark.attributes.location[0]}&z=16&output=embed`
+          `https://maps.google.com/maps?q=${this.landmark.attributes.location?.[1]},${this.landmark.attributes.location?.[0]}&z=16&output=embed`
         ) as string)
       : null
   }
