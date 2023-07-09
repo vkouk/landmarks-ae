@@ -18,16 +18,25 @@ const parseServer = new ParseServer({
   masterKey: process.env.MASTER_KEY,
   serverURL: process.env.SERVER_URL
 })
-const parseDashboard = new ParseDashboard({
-  apps: [
-    {
-      serverURL: '/parse',
-      appId: process.env.APP_ID,
-      masterKey: process.env.MASTER_KEY,
-      appName: 'Landmarks Web App'
-    }
-  ]
-})
+const parseDashboard = new ParseDashboard(
+  {
+    apps: [
+      {
+        serverURL: '/parse',
+        appId: process.env.APP_ID,
+        masterKey: process.env.MASTER_KEY,
+        appName: process.env.APP_NAME
+      }
+    ],
+    users: [
+      {
+        user: process.env.APP_USER,
+        pass: process.env.APP_PASS
+      }
+    ]
+  },
+  { allowInsecureHTTP: true }
+)
 
 await parseServer.start()
 
