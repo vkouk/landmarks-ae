@@ -29,4 +29,17 @@ export class LandmarksService {
       { sessionToken: this.usersService.currentUser()?.getSessionToken() }
     )
   }
+
+  async updatePhoto(
+    id: string,
+    image: string,
+    name: string,
+    type: string
+  ): Promise<ILandmark> {
+    return await Parse.Cloud.run(
+      'updatePhoto',
+      { id, image, name, type },
+      { sessionToken: this.usersService.currentUser()?.getSessionToken() }
+    )
+  }
 }

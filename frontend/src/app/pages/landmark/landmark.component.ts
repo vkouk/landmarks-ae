@@ -1,7 +1,8 @@
-import { Component } from '@angular/core'
+import { Component, ElementRef, ViewChild } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { DomSanitizer } from '@angular/platform-browser'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
+import { ViewportScroller } from '@angular/common'
 
 import { ILandmark } from '../../shared/interfaces/landmark'
 import { LandmarksService } from '../../shared/services/landmarks.service'
@@ -11,6 +12,8 @@ import { LandmarksService } from '../../shared/services/landmarks.service'
   templateUrl: './landmark.component.html'
 })
 export class LandmarkComponent {
+  @ViewChild('errorMessage') errorMessageEl!: ElementRef
+
   landmark: ILandmark | null = null
   error: string | null = null
   isEditMode: boolean = false
@@ -24,6 +27,7 @@ export class LandmarkComponent {
   constructor(
     private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
+    private scroller: ViewportScroller,
     private landmarksService: LandmarksService,
     private route: ActivatedRoute,
     private router: Router
@@ -45,6 +49,44 @@ export class LandmarkComponent {
         this.error = error.message
       }
     })
+  }
+
+  onPhotoChange(event: Event) {
+    const fileReader = new FileReader()
+    const eventTarget = event.target as HTMLInputElement
+
+    if (eventTarget.files && eventTarget.files.length > 0) {
+      const file = eventTarget.files[0]
+
+      fileReader.readAsDataURL(file)
+
+      fileReader.onload = async (e: any) => {
+        try {
+          this.error = null
+
+          const { id: landmarkId, attributes } = this.landmark as ILandmark
+
+          const updatedLandmark = await this.landmarksService.updatePhoto(
+            landmarkId,
+            e.target.result,
+            file.name,
+            file.type
+          )
+
+          attributes.photo_thumb = updatedLandmark.attributes.photo_thumb
+        } catch (error: any) {
+          this.error = error.message
+          // Execute scroll to error message after message is visible
+          setTimeout(
+            () =>
+              this.errorMessageEl.nativeElement.scrollIntoView({
+                behavior: 'smooth'
+              }),
+            0
+          )
+        }
+      }
+    }
   }
 
   async toggleEditMode() {

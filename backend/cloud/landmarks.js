@@ -1,3 +1,5 @@
+import sharp from 'sharp'
+
 Parse.Cloud.define('fetchLandmarks', async (req) => {
   const LandMark = Parse.Object.extend('Landmark')
   const query = new Parse.Query(LandMark)
@@ -86,6 +88,57 @@ Parse.Cloud.define(
         type: Object
       }
     },
+    requireUser: true
+  }
+)
+
+Parse.Cloud.define(
+  'updatePhoto',
+  async (req) => {
+    const { id, image, name, type } = req.params
+
+    const LandMark = Parse.Object.extend('Landmark')
+    const query = new Parse.Query(LandMark)
+
+    query.select('photo_thumb')
+
+    const model = await query.get(id)
+
+    // Retrieve base64 data
+    const base64Image = image.split(',')[1]
+    const imageBuffer = Buffer.from(base64Image, 'base64')
+
+    // Check if file size is greater than 5MB
+    if (imageBuffer.length > 5 * 1024 * 1024) {
+      throw new Parse.Error(500, `File's size is bigger than 5MB`)
+    }
+
+    const photoThumbBuffer = await sharp(imageBuffer)
+      .resize(Number(process.env.PHOTO_WIDTH), Number(process.env.PHOTO_HEIGHT))
+      .toBuffer()
+
+    // Save original photo
+    const file = new Parse.File(name, { base64: base64Image }, type)
+    await file.save()
+
+    // Save resized thumb photo
+    const [fileName, fileExt] = name.split('.')
+    const thumbFile = new Parse.File(
+      `${fileName}_thumb.${fileExt}`,
+      { base64: photoThumbBuffer.toString('base64') },
+      type
+    )
+    await thumbFile.save()
+
+    model.set('photo', file.url())
+    model.set('photo_thumb', thumbFile.url())
+
+    await model.save(null, { sessionToken: req.user.getSessionToken() })
+
+    return model
+  },
+  {
+    fields: ['id', 'image', 'name', 'type'],
     requireUser: true
   }
 )

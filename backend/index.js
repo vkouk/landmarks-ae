@@ -16,7 +16,8 @@ const parseServer = new ParseServer({
   cloud: `${process.cwd()}/cloud/main.js`,
   appId: process.env.APP_ID,
   masterKey: process.env.MASTER_KEY,
-  serverURL: process.env.SERVER_URL
+  serverURL: process.env.SERVER_URL,
+  publicServerURL: process.env.PUBLIC_SERVER_URL
 })
 const parseDashboard = new ParseDashboard(
   {

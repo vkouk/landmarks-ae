@@ -9,6 +9,7 @@ import { LandmarkComponent } from './pages/landmark/landmark.component'
 import { LoginComponent } from './pages/login/login.component'
 
 import { CustomInputComponent } from './shared/components/custom-input/custom-input.component'
+import { EditIconComponent } from './shared/components/edit-icon/edit-icon.component'
 
 const routes: Routes = [
   { path: '', component: LandmarksComponent },
@@ -23,7 +24,8 @@ const routes: Routes = [
     LandmarksComponent,
     LandmarkComponent,
     LoginComponent,
-    CustomInputComponent
+    CustomInputComponent,
+    EditIconComponent
   ],
   imports: [BrowserModule, RouterModule.forRoot(routes), ReactiveFormsModule],
   providers: [],
