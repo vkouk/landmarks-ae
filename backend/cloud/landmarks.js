@@ -119,7 +119,7 @@ Parse.Cloud.define(
 
     // Save original photo
     const file = new Parse.File(name, { base64: base64Image }, type)
-    await file.save()
+    await file.save({ sessionToken: req.user.getSessionToken() })
 
     // Save resized thumb photo
     const [fileName, fileExt] = name.split('.')
@@ -128,7 +128,7 @@ Parse.Cloud.define(
       { base64: photoThumbBuffer.toString('base64') },
       type
     )
-    await thumbFile.save()
+    await thumbFile.save({ sessionToken: req.user.getSessionToken() })
 
     model.set('photo', file.url())
     model.set('photo_thumb', thumbFile.url())
