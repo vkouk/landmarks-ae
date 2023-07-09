@@ -75,7 +75,11 @@
   </div>
 
   <div class="flex flex-col w-full h-full items-center" *ngIf="isEditMode">
-    <form [formGroup]="landmarkForm" (keydown.enter)="$event.preventDefault()">
+    <form
+      [formGroup]="landmarkForm"
+      (keydown.enter)="$event.preventDefault()"
+      class="w-full sm:w-auto"
+    >
       <div class="flex flex-col gap-y-5">
         <div class="flex flex-col gap-y-1">
           <label for="title">Title</label>
@@ -128,7 +132,5 @@
     </form>
   </div>
 
-  <div *ngIf="error" #errorMessage class="flex items-center justify-center">
-    <span class="text-red-700 text-bold text-2xl">{{ error }}</span>
-  </div>
+  <app-error-message [error]="error" [scrollTo]="true"></app-error-message>
 </div>

@@ -10,6 +10,7 @@ import { LoginComponent } from './pages/login/login.component'
 
 import { CustomInputComponent } from './shared/components/custom-input/custom-input.component'
 import { EditIconComponent } from './shared/components/edit-icon/edit-icon.component'
+import { ErrorMessageComponent } from './shared/components/error-message/error-message.component'
 
 const routes: Routes = [
   { path: '', component: LandmarksComponent },
@@ -25,7 +26,8 @@ const routes: Routes = [
     LandmarkComponent,
     LoginComponent,
     CustomInputComponent,
-    EditIconComponent
+    EditIconComponent,
+    ErrorMessageComponent
   ],
   imports: [BrowserModule, RouterModule.forRoot(routes), ReactiveFormsModule],
   providers: [],

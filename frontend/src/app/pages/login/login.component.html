@@ -13,6 +13,7 @@
     placeholder="Password..."
     class="w-full"
   ></app-custom-input>
+
   <button
     [disabled]="loginButtonDisabled"
     (click)="loginUser()"
@@ -20,5 +21,6 @@
   >
     Login
   </button>
-  <span *ngIf="error" class="text-red-700 text-bold text-2xl">{{ error }}</span>
+
+  <app-error-message [error]="error"></app-error-message>
 </div>

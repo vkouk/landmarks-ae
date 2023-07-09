@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core'
+import { Component } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { DomSanitizer } from '@angular/platform-browser'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
@@ -12,8 +12,6 @@ import { LandmarksService } from '../../shared/services/landmarks.service'
   templateUrl: './landmark.component.html'
 })
 export class LandmarkComponent {
-  @ViewChild('errorMessage') errorMessageEl!: ElementRef
-
   landmark: ILandmark | null = null
   error: string | null = null
   isEditMode: boolean = false
@@ -76,14 +74,6 @@ export class LandmarkComponent {
           attributes.photo_thumb = updatedLandmark.attributes.photo_thumb
         } catch (error: any) {
           this.error = error.message
-          // Execute scroll to error message after message is visible
-          setTimeout(
-            () =>
-              this.errorMessageEl.nativeElement.scrollIntoView({
-                behavior: 'smooth'
-              }),
-            0
-          )
         }
       }
     }
