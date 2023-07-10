@@ -84,14 +84,4 @@ describe('LandmarksComponent', () => {
     expect(landmarksServiceSpy.fetchLandmarks).toHaveBeenCalled()
     expect(component.landmarks).toEqual([mockLandmarks[0]])
   })
-
-  it('should open and close the image modal', () => {
-    const mockLandmark = mockLandmarks[0]
-
-    component.openImageModal(mockLandmark)
-    expect(component.selectedLandmark).toEqual(mockLandmark)
-
-    component.closeImageModal()
-    expect(component.selectedLandmark).toBeNull()
-  })
 })

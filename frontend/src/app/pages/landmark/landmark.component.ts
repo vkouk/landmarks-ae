@@ -14,6 +14,7 @@ import { LandmarksService } from '../../shared/services/landmarks.service'
 export class LandmarkComponent {
   landmark: ILandmark | null = null
   isEditMode: boolean = false
+  showPhotoPopup: boolean = false
 
   landmarkForm: FormGroup = new FormGroup({
     title: new FormControl('', Validators.required),
@@ -54,17 +55,24 @@ export class LandmarkComponent {
       fileReader.readAsDataURL(file)
 
       fileReader.onload = async (e: any) => {
-        const { id: landmarkId, attributes } = this.landmark as ILandmark
+        if (this.landmark) {
+          const updatedLandmark = await this.landmarksService.updatePhoto(
+            this.landmark.id,
+            e.target.result,
+            file.name,
+            file.type
+          )
 
-        const updatedLandmark = await this.landmarksService.updatePhoto(
-          landmarkId,
-          e.target.result,
-          file.name,
-          file.type
-        )
-
-        if (updatedLandmark) {
-          attributes.photo_thumb = updatedLandmark.attributes.photo_thumb
+          if (updatedLandmark) {
+            this.landmark = {
+              ...this.landmark,
+              attributes: {
+                ...this.landmark.attributes,
+                photo: updatedLandmark.attributes.photo,
+                photo_thumb: updatedLandmark.attributes.photo_thumb
+              }
+            }
+          }
         }
       }
     }
@@ -97,6 +105,10 @@ export class LandmarkComponent {
     if (updatedLandmark) {
       await this.router.navigate(['landmark', updatedLandmark.attributes.title])
     }
+  }
+
+  togglePhotoPopup() {
+    this.showPhotoPopup = !this.showPhotoPopup
   }
 
   _updateLandmarkForm() {
