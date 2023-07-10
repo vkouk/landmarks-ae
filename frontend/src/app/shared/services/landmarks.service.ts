@@ -3,9 +3,8 @@ import { Injectable } from '@angular/core'
 import * as Parse from 'parse'
 
 import { ILandmark, ILandmarkInput } from '../interfaces/landmark'
+import { PromiseCallback } from '../types/promise'
 import { UserService } from './user.service'
-
-type PromiseCallback<T> = () => Promise<T>
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +48,7 @@ export class LandmarksService {
         await Parse.Cloud.run(
           'updateLandmark',
           { id, updatedData },
-          { sessionToken: this.usersService.currentUser()?.getSessionToken() }
+          { sessionToken: this.usersService.currentUser?.getSessionToken() }
         ),
       (error: any) => {
         this.fetchError = error.message
@@ -70,7 +69,7 @@ export class LandmarksService {
         await Parse.Cloud.run(
           'updatePhoto',
           { id, image, name, type },
-          { sessionToken: this.usersService.currentUser()?.getSessionToken() }
+          { sessionToken: this.usersService.currentUser?.getSessionToken() }
         ),
       (error: any) => {
         this.fetchError = error.message

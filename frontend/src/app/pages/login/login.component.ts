@@ -1,6 +1,5 @@
 import { Component } from '@angular/core'
 import { FormControl } from '@angular/forms'
-import { Router } from '@angular/router'
 
 import { UserService } from '../../shared/services/user.service'
 
@@ -9,32 +8,27 @@ import { UserService } from '../../shared/services/user.service'
   templateUrl: './login.component.html'
 })
 export class LoginComponent {
-  error: string | null = null
-
   usernameControl = new FormControl('')
   passwordControl = new FormControl('')
 
-  constructor(
-    private usersService: UserService,
-    private router: Router
-  ) {}
+  constructor(private usersService: UserService) {}
 
   async loginUser() {
-    try {
-      await this.usersService.loginUser(
-        this.usernameControl.value as string,
-        this.passwordControl.value as string
-      )
-
-      await this.router.navigate(['/'])
-    } catch (error: any) {
-      this.error = error.message
-    }
+    await this.usersService.loginUser(
+      this.usernameControl.value as string,
+      this.passwordControl.value as string
+    )
   }
 
   get loginButtonDisabled(): boolean {
     return (
-      this.usernameControl.value === '' || this.passwordControl.value === ''
+      this.usernameControl.value === '' ||
+      this.passwordControl.value === '' ||
+      this.usersService.loading
     )
+  }
+
+  get error() {
+    return this.usersService.fetchError
   }
 }

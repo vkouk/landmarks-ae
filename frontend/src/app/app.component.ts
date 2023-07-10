@@ -1,5 +1,4 @@
 import { Component } from '@angular/core'
-import { NavigationEnd, Router } from '@angular/router'
 
 import { ParseServerService } from './shared/services/parse-server.service'
 import { UserService } from './shared/services/user.service'
@@ -9,28 +8,22 @@ import { UserService } from './shared/services/user.service'
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  currentUser: Parse.User<Parse.Attributes> | undefined
-
   constructor(
     private parseService: ParseServerService,
-    private usersService: UserService,
-    private router: Router
+    private usersService: UserService
   ) {
     this.parseService.initializeParse()
   }
 
-  ngAfterViewInit() {
-    this.router.events.subscribe((event) => {
-      // Assign user once on init
-      if (event instanceof NavigationEnd && !this.currentUser) {
-        this.currentUser = this.usersService.currentUser()
-      }
-    })
+  ngOnInit() {
+    this.usersService.initUser()
   }
 
   async logoutUser() {
     await this.usersService.logoutUser()
+  }
 
-    this.currentUser = undefined
+  get currentUser() {
+    return this.usersService.currentUser
   }
 }
