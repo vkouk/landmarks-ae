@@ -48,6 +48,15 @@ npm ci
 npm run start:dev
 ```
 
+#### Local servers
+
+Based on above environment variables parse server & dashboard are available under:
+
+Server: http://localhost:5000/parse
+Dashboard: http://localhost:5000/dashboard
+
+For username / password use `APP_USER` &  `APP_PASS` values.
+
 ### Frontend
 
 Example `frontend/.env` file with content (replace <place-holders>):
